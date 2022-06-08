@@ -1,22 +1,20 @@
 package com.ligomezm.offersandcoupons
 
 import android.content.Intent
-import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
-class RecyclerCouponsAdapter (
-    var coupons : ArrayList<Coupon>,
-    var resource: Int
-    ) : RecyclerView.Adapter<RecyclerCouponsAdapter.CardCouponHolder>() {
+class RecyclerCouponsAdapter(var coupons: ArrayList<Coupon>, var resource: Int) :
+    RecyclerView.Adapter<RecyclerCouponsAdapter.CardCouponHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CardCouponHolder {
-        var view: View = LayoutInflater.from(p0!!.context).inflate(resource, p0, false)
+        var view: View = LayoutInflater.from(p0.context).inflate(resource, p0, false)
         return CardCouponHolder(view)
     }
 
@@ -42,24 +40,25 @@ class RecyclerCouponsAdapter (
             v.setOnClickListener(this)
         }
 
-        fun setDataCard(coupon: Coupon){
+        fun setDataCard(coupon: Coupon) {
             this.coupon = coupon
-            Picasso.get().load(coupon.image_url).resize(520, 520).centerCrop().into(imgCoupon)
-            tvTitle.setText(coupon.title)
-            tvDescriptionShort.setText(coupon.descriptionShort)
-            tvCategory.setText(coupon.category)
-            tvDate.setText(coupon.endDate)
-
+            if (coupon.image_url.isNotEmpty()) {
+                Picasso.get().load(coupon.image_url).resize(520, 520).centerCrop().into(imgCoupon)
+            } else {
+                imgCoupon.setImageResource(R.drawable.header)
+            }
+            tvTitle.text = coupon.title
+            tvDescriptionShort.text = coupon.descriptionShort
+            tvCategory.text = coupon.category
+            tvDate.text = coupon.endDate
         }
 
         override fun onClick(v: View) {
-//            Log.i("CLICK Coupon: ", coupon?.title)
+            Log.i("CLICK Coupon: ", coupon?.title!!)
             val context = v.context
             val showPhotoIntent = Intent(context, CouponDetailActivity::class.java)
             showPhotoIntent.putExtra("COUPON", coupon)
             context.startActivity(showPhotoIntent)
-
         }
-
     }
 }
