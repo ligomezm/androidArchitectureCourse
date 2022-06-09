@@ -1,4 +1,4 @@
-package com.ligomezm.offersandcoupons
+package com.ligomezm.offersandcoupons.view
 
 import android.content.Intent
 import android.util.Log
@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.ligomezm.offersandcoupons.model.Coupon
+import com.ligomezm.offersandcoupons.R
 import com.squareup.picasso.Picasso
 
-class RecyclerCouponsAdapter(var coupons: ArrayList<Coupon>, var resource: Int) :
+class RecyclerCouponsAdapter(var coupons: ArrayList<Coupon>?, var resource: Int) :
     RecyclerView.Adapter<RecyclerCouponsAdapter.CardCouponHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CardCouponHolder {
@@ -19,11 +21,11 @@ class RecyclerCouponsAdapter(var coupons: ArrayList<Coupon>, var resource: Int) 
     }
 
     override fun getItemCount(): Int {
-        return coupons.size
+        return coupons?.size ?: 0
     }
 
     override fun onBindViewHolder(p0: CardCouponHolder, p1: Int) {
-        var coupon = coupons.get(p1)
+        var coupon = coupons?.get(p1)
         p0.setDataCard(coupon)
     }
 
@@ -40,17 +42,19 @@ class RecyclerCouponsAdapter(var coupons: ArrayList<Coupon>, var resource: Int) 
             v.setOnClickListener(this)
         }
 
-        fun setDataCard(coupon: Coupon) {
+        fun setDataCard(coupon: Coupon?) {
             this.coupon = coupon
-            if (coupon.image_url.isNotEmpty()) {
-                Picasso.get().load(coupon.image_url).resize(520, 520).centerCrop().into(imgCoupon)
-            } else {
-                imgCoupon.setImageResource(R.drawable.header)
+            if (coupon != null) {
+                if (coupon.image_url.isNotEmpty()) {
+                    Picasso.get().load(coupon.image_url).resize(520, 520).centerCrop().into(imgCoupon)
+                } else {
+                    imgCoupon.setImageResource(R.drawable.header)
+                }
             }
-            tvTitle.text = coupon.title
-            tvDescriptionShort.text = coupon.descriptionShort
-            tvCategory.text = coupon.category
-            tvDate.text = coupon.endDate
+            tvTitle.setText(coupon?.title)
+            tvDescriptionShort.setText(coupon?.descriptionShort)
+            tvCategory.setText(coupon?.category)
+            tvDate.setText(coupon?.endDate)
         }
 
         override fun onClick(v: View) {

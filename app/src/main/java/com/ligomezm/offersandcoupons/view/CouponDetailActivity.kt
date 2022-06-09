@@ -1,4 +1,4 @@
-package com.ligomezm.offersandcoupons
+package com.ligomezm.offersandcoupons.view
 
 import android.content.Intent
 import android.net.Uri
@@ -7,6 +7,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.ligomezm.offersandcoupons.model.Coupon
+import com.ligomezm.offersandcoupons.R
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 

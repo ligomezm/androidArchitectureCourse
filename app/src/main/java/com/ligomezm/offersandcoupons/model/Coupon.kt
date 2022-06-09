@@ -1,4 +1,4 @@
-package com.ligomezm.offersandcoupons
+package com.ligomezm.offersandcoupons.model
 
 import com.google.gson.JsonObject
 import java.io.Serializable

@@ -1,30 +1,18 @@
-package com.ligomezm.offersandcoupons
+package com.ligomezm.offersandcoupons.model
 
-import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import com.ligomezm.offersandcoupons.model.ApiAdapter
+import com.ligomezm.offersandcoupons.presenter.CouponPresenter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity() {
+class CouponRepositoryImpl(var couponPresenter: CouponPresenter) : CouponRepository {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        supportActionBar?.hide()
+    override fun getCouponsAPI() {
 
-        //VIEW
-        val rvCoupons: RecyclerView = findViewById(R.id.rvCoupons)
-        rvCoupons.layoutManager = LinearLayoutManager(this)
-        val coupons = ArrayList<Coupon>()
-
-        //CONTROLLER
+        var coupons: ArrayList<Coupon>? = ArrayList<Coupon>()
         val apiAdapter = ApiAdapter()
         val apiService = apiAdapter.getClientService()
         val call = apiService.getCoupons()
@@ -40,10 +28,9 @@ class MainActivity : AppCompatActivity() {
                 offersJsonArray?.forEach { jsonElement: JsonElement ->
                     var jsonObject = jsonElement.asJsonObject
                     var coupon = Coupon(jsonObject)
-                    coupons.add(coupon)
+                    coupons?.add(coupon)
                 }
-                //VIEW
-                rvCoupons.adapter = RecyclerCouponsAdapter(coupons, R.layout.card_coupon)
+                couponPresenter.showCoupons(coupons)
             }
         })
     }
