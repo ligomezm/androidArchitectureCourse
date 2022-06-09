@@ -1,5 +1,8 @@
 package com.ligomezm.offersandcoupons.model
 
+import androidx.lifecycle.MutableLiveData
+
 interface CouponRepository {
-    fun getCouponsAPI()
+    fun getCoupons(): MutableLiveData<List<Coupon>>
+    fun callCouponsAPI()
 }

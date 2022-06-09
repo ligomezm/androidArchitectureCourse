@@ -7,8 +7,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.ligomezm.offersandcoupons.model.Coupon
 import com.ligomezm.offersandcoupons.R
+import com.ligomezm.offersandcoupons.model.Coupon
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -43,9 +43,11 @@ class CouponDetailActivity : AppCompatActivity() {
         tvWebsiteDetailData.text = couponSelected?.website
         tvDateEndData.text = couponSelected?.endDate
 
-        if (couponSelected?.image_url?.isNotEmpty() == true){
-            Picasso.get().load(couponSelected?.image_url).resize(520, 520).centerCrop().into(imgHeaderDetail)
-            Picasso.get().load(couponSelected?.image_url).resize(520, 520).centerCrop().into(imgCouponDetail)
+        if (couponSelected?.image_url?.isNotEmpty() == true) {
+            Picasso.get().load(couponSelected?.image_url).resize(520, 520).centerCrop()
+                .into(imgHeaderDetail)
+            Picasso.get().load(couponSelected?.image_url).resize(520, 520).centerCrop()
+                .into(imgCouponDetail)
         }
 
         btnOpenOffer.setOnClickListener {

@@ -1,18 +1,20 @@
 package com.ligomezm.offersandcoupons.model
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import com.ligomezm.offersandcoupons.presenter.CouponPresenter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CouponRepositoryImpl(var couponPresenter: CouponPresenter) : CouponRepository {
+class CouponRepositoryImpl : CouponRepository {
 
-    override fun getCouponsAPI() {
+    private var coupons = MutableLiveData<List<Coupon>>()
 
-        var coupons: ArrayList<Coupon>? = ArrayList<Coupon>()
+    override fun callCouponsAPI() {
+
+        var couponsList: ArrayList<Coupon>? = ArrayList<Coupon>()
         val apiAdapter = ApiAdapter()
         val apiService = apiAdapter.getClientService()
         val call = apiService.getCoupons()
@@ -28,10 +30,14 @@ class CouponRepositoryImpl(var couponPresenter: CouponPresenter) : CouponReposit
                 offersJsonArray?.forEach { jsonElement: JsonElement ->
                     var jsonObject = jsonElement.asJsonObject
                     var coupon = Coupon(jsonObject)
-                    coupons?.add(coupon)
+                    couponsList?.add(coupon)
                 }
-                couponPresenter.showCoupons(coupons)
+                coupons.value = couponsList
             }
         })
+    }
+
+    override fun getCoupons(): MutableLiveData<List<Coupon>> {
+        return coupons
     }
 }
